@@ -21,7 +21,27 @@ game.PlayerEntity = me.Entity.extend({
     },
     
     update: function(dt) {
-
+        
+        if(me.input.isKeyPressed("left")){
+            this.flipX(true); 
+            this.body.vel.x -= this.body.accel.x * me.timer.tick;
+          
+        }else{
+            this.body.vel.x = 0;
+        }     
+        
+        this.body.update(dt);
+        me.collision.check(this, true, this.collideHandler.bind)(this), true);
+        
+        if (this.body.vel.x !== 0) {
+            if (!this.renderable.isCurrentAnimation("smallWalk")){
+                this.renderable.setCurrentAnimation("smallWalk");
+                this.renderable.setAnimationFrame();
+            }
+        } else{
+            this.renderable.setCurrentAnimation("idle");
+        }
+        
         if (me.input.isKeyPressed("right")) {
             this.body.vel.x += this.body.accel.x * me.timer.tick;
             
@@ -30,10 +50,11 @@ game.PlayerEntity = me.Entity.extend({
         }
 
         if (this.body.vel.x !== 0) {
-            if (!this.renderable.isCurrentAnimation("smallWalk"))
+            if (!this.renderable.isCurrentAnimation("smallWalk")){
                 this.renderable.setCurrentAnimation("smallWalk");
                 this.renderable.setAnimationFrame();
-        } else {
+            }
+        } else{
             this.renderable.setCurrentAnimation("idle");
         }
 
