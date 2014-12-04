@@ -17,21 +17,33 @@ game.PlayerEntity = me.Entity.extend({
 
         this.renderable.setCurrentAnimation("idle");
 
-        this.body.setVelocity(5, 20);  
     },
     
+    /*-------------------------------------------------------------------------
+     * player movement (diresctionals)
+     * ------------------------------------------------------------------------ 
+     */
+   
     update: function(dt) {
+        
+        this.body.setVelocity(5, 20);  
+        
+        if(me.input.isKeyPressed("jump")){
+            this.body.vel.x -= this.body.accel.x * me.timer.tick;
+        }
         
         if(me.input.isKeyPressed("left")){
             this.flipX(true); 
             this.body.vel.x -= this.body.accel.x * me.timer.tick;
           
-        }else{
+        }else if(me.input.isKeyPressed("right")) {
+            this.flipX(false);
+            this.body.vel.x += this.body.accel.x * me.timer.tick;
+        }
+        else{
             this.body.vel.x = 0;
         }     
-        
-        this.body.update(dt);
-        me.collision.check(this, true, this.collideHandler.bind)(this), true);
+     
         
         if (this.body.vel.x !== 0) {
             if (!this.renderable.isCurrentAnimation("smallWalk")){
@@ -42,21 +54,8 @@ game.PlayerEntity = me.Entity.extend({
             this.renderable.setCurrentAnimation("idle");
         }
         
-        if (me.input.isKeyPressed("right")) {
-            this.body.vel.x += this.body.accel.x * me.timer.tick;
-            
-        } else {
-            this.body.vel.x = 0;
-        }
+       
 
-        if (this.body.vel.x !== 0) {
-            if (!this.renderable.isCurrentAnimation("smallWalk")){
-                this.renderable.setCurrentAnimation("smallWalk");
-                this.renderable.setAnimationFrame();
-            }
-        } else{
-            this.renderable.setCurrentAnimation("idle");
-        }
 
         this.body.update(dt);
         this._super(me.Entity, "update", [dt]);
