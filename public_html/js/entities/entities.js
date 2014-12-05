@@ -20,7 +20,7 @@ game.PlayerEntity = me.Entity.extend({
     },
     
     /*-------------------------------------------------------------------------
-     * player movement (diresctionals)
+     * player movement (diretctionals)
      * ------------------------------------------------------------------------ 
      */
    
@@ -44,7 +44,7 @@ game.PlayerEntity = me.Entity.extend({
             this.body.vel.x = 0;
         }     
      
-        
+        //sets the animation of the character while ide and in movement//
         if (this.body.vel.x !== 0) {
             if (!this.renderable.isCurrentAnimation("smallWalk")){
                 this.renderable.setCurrentAnimation("smallWalk");
@@ -62,3 +62,19 @@ game.PlayerEntity = me.Entity.extend({
         return true;
     }
 });
+//sets up for the character to move to the next level// 
+game.LevelTrigger = me.Entity.extend ({
+    init: function (x,y, settings){
+        this._super(me.Entity, 'init', [x,y, settings]);
+        this.body.onCollisions = this.onCollision.bind(this); 
+        this.level = settings. level; 
+        this.xSpawn = settings. xSpawn; 
+        this.ySpawn = settings.yspawn; 
+    },
+    
+    onCollision:function() {
+        this.body.setCollisionMask(me.collision.types.NO_OBJECT);
+        me.levelDirector.loadLevel(this.level); 
+        me.state.cucurrent().resetPlayer(this.xSpawn, this.ySpawn);
+    } 
+    });
