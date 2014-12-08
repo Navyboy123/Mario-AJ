@@ -12,7 +12,10 @@ game.PlayerEntity = me.Entity.extend({
                 }
             }]);
 
+
+// sets player animation while walking or idle//
         this.renderable.addAnimation("idle", [3]);
+// sets the images used for the animations pe-powerups//
         this.renderable.addAnimation("smallWalk", [8, 9, 10, 11, 12, 13], 80);
 
         this.renderable.setCurrentAnimation("idle");
@@ -28,11 +31,12 @@ game.PlayerEntity = me.Entity.extend({
         
         this.body.setVelocity(5, 20);  
         
-        if(me.input.isKeyPressed("jump")){
-            this.body.vel.x -= this.body.accel.x * me.timer.tick;
-        }
-        
-        if(me.input.isKeyPressed("left")){
+        if (me.input.isKeyPressed ("up")){
+            if(!this.body.jumping && !this.body.falling)
+                this.body.vel.y += -this.body.maxVel.y * me.timer.tick;
+            this.body.jumping = true; 
+            
+        } else if(me.input.isKeyPressed("left")){
             this.flipX(true); 
             this.body.vel.x -= this.body.accel.x * me.timer.tick;
           
