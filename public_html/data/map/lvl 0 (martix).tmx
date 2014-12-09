@@ -25,9 +25,9 @@
   </data>
  </layer>
  <objectgroup name="trigger/entities">
-  <object name="level trigger " x="982" y="418" width="68" height="140">
+  <object name="LevelTrigger" x="982" y="418" width="68" height="140">
    <properties>
-    <property name="level lvl 0-1" value="lvl 0-1 "/>
+    <property name="level" value="level2"/>
    </properties>
   </object>
  </objectgroup>
